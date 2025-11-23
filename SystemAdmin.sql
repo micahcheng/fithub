@@ -40,23 +40,32 @@ SELECT
     (SELECT COUNT(*) FROM Reports WHERE Resolved = 0) AS OpenReports;
 
 -- 6. As an admin, I want to remove duplicate or spam listings so that the platform remains trustworthy.
-UPDATE Items
-SET IsAvailable = 0
-WHERE ItemID IN (
-    SELECT ItemID FROM (
-        SELECT i2.ItemID
+DELETE FROM Items
+WHERE
+    -- Duplicate items
+    EXISTS (
+        SELECT 1
         FROM Items i1
-        INNER JOIN Items i2 ON i1.Title = i2.Title AND i1.OwnerID = i2.OwnerID AND i1.ItemID < i2.ItemID
-        WHERE i1.IsAvailable = 1 AND i2.IsAvailable = 1
-        UNION
-        SELECT ReportedItem AS ItemID
+        WHERE i1.Title = Items.Title
+          AND i1.OwnerID = Items.OwnerID
+          AND i1.ItemID < Items.ItemID
+          AND i1.IsAvailable = 1
+          AND Items.IsAvailable = 1
+    )
+    OR
+    -- Spam or highly reported items
+    Items.ItemID IN (
+        SELECT ReportedItem
         FROM Reports
         WHERE ReportedItem IS NOT NULL AND Resolved = 0
         GROUP BY ReportedItem
-        HAVING COUNT(*) >= 2 OR MAX(Severity) >= 4
-    ) AS to_remove
-);
+        HAVING COUNT(*) >= 2
+            OR MAX(Severity) >= 4
+    );
 
 UPDATE Reports
-SET Resolved = 1, ResolverID = 4, ResolvedAt = NOW()
-WHERE ReportedItem IN (SELECT ItemID FROM Items WHERE IsAvailable = 0) AND Resolved = 0;
+SET Resolved = 1,
+    ResolverID = 4,
+    ResolvedAt = NOW()
+WHERE ReportedItem NOT IN (SELECT ItemID FROM Items)
+  AND Resolved = 0;
