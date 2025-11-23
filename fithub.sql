@@ -13,9 +13,7 @@ Address VARCHAR(255) NOT NULL,
 DOB DATE NOT NULL,
 Gender VARCHAR(20) NOT NULL,
 IsActive BOOLEAN NOT NULL,
-Role VARCHAR(100) NOT NULL,
-LastLoginAt DATETIME NULL,
-CreatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+Role VARCHAR(100) NOT NULL
 );
 
 
@@ -49,8 +47,7 @@ Size VARCHAR(10) NOT NULL,
 IsAvailable BOOLEAN NOT NULL,
 OwnerID INT NOT NULL,
 ListedAt DATETIME NOT NULL,
-Type VARCHAR(10) NOT NULL,
-IsRemoved BOOLEAN NOT NULL DEFAULT 0,
+`Type` VARCHAR(10) NOT NULL,
 FOREIGN KEY (OwnerID) REFERENCES Users(UserID)
 );
 
@@ -144,14 +141,14 @@ CHECK (Rating BETWEEN 1 AND 5)
 );
 
 
-INSERT INTO Users (Name, Email, Phone, Address, DOB, Gender, IsActive, Role, LastLoginAt)
+INSERT INTO Users (Name, Email, Phone, Address, DOB, Gender, IsActive, Role)
 VALUES
-('Lena Park', 'lena@example.com', '5551112222','12 Willow Lane, Brooklyn, NY','1998-06-15','Female',1,'User','2025-02-10 09:00:00'),
-('Marcus Lee','marcus@example.com','5552223333','89 Cedar St, Seattle, WA','1995-03-02','Male',1,'Moderator','2025-02-01 12:30:00'),
-('Jade Alvarez','jade@example.com','5553334444','301 Sunset Blvd, Los Angeles, CA','2000-11-20','Female',1,'User','2024-12-01 08:20:00'),
-('Michael Dunkin','dunkindonutes@gmail.com','4928482938','3958 Sailing Ave, Pittsburgh, PA','1996-05-29','Male',1,'Admin','2025-02-10 09:00:00'),
-('Test Moderator','mod@test.com','5559998888','123 Test Ln','1990-01-01','Other',1,'Moderator','2025-02-10 10:00:00'),
-('Spam Bot','spam@bot.com','0000000000','Unknown','2000-01-01','N/A',0,'User','2023-01-01 00:00:00');
+('Lena Park', 'lena@example.com', '5551112222','12 Willow Lane, Brooklyn, NY','1998-06-15','Female',1,'User'),
+('Marcus Lee','marcus@example.com','5552223333','89 Cedar St, Seattle, WA','1995-03-02','Male',1,'Moderator'),
+('Jade Alvarez','jade@example.com','5553334444','301 Sunset Blvd, Los Angeles, CA','2000-11-20','Female',1,'User'),
+('Michael Dunkin','dunkindonutes@gmail.com','4928482938','3958 Sailing Ave, Pittsburgh, PA','1996-05-29','Male',1,'Admin'),
+('Test Moderator','mod@test.com','5559998888','123 Test Ln','1990-01-01','Other',1,'Moderator'),
+('Spam Bot','spam@bot.com','0000000000','Unknown','2000-01-01','N/A',0,'User');
 
 
 
@@ -167,12 +164,12 @@ VALUES
 
 
 
-INSERT INTO Items (Title, Category, Description, Size, Type, `Condition`, IsAvailable, OwnerID, ListedAt, IsRemoved)
+INSERT INTO Items (Title, Category, Description, Size, `Type`, `Condition`, IsAvailable, OwnerID, ListedAt)
 VALUES
-('Brandy Melville Baby Tee','t-shirt','y2k white baby tee...', 'S','Swap','Very good',1,1,'2025-02-04 11:00:00',0),
-('Levi''s 501 Straight Jeans','jeans','vintage light wash...', 'M','Swap','Good',1,2,'2025-02-04 13:20:00',0),
-('Zara Oversized Hoodie','hoodie','charcoal gray oversized...', 'L','Take','Excellent',1,3,'2025-02-05 10:15:00',0),
-('American Eagle Maxi Skirt','skirt','boho floral maxi skirt...', 'M','Take','Good',0,1,'2025-02-05 16:40:00',0);
+('Brandy Melville Baby Tee','t-shirt','y2k white baby tee...', 'S','Swap','Very good',1,1,'2025-02-04 11:00:00'),
+('Levi''s 501 Straight Jeans','jeans','vintage light wash...', 'M','Swap','Good',1,2,'2025-02-04 13:20:00'),
+('Zara Oversized Hoodie','hoodie','charcoal gray oversized...', 'L','Take','Excellent',1,3,'2025-02-05 10:15:00'),
+('American Eagle Maxi Skirt','skirt','boho floral maxi skirt...', 'M','Take','Good',0,1,'2025-02-05 16:40:00');
 
 
 
