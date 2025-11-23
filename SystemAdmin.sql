@@ -9,6 +9,7 @@ WHERE Resolved = 0;
 UPDATE Users
 SET Role = 'Analyst'
 WHERE UserID = 3;
+SELECT * FROM Users;
 
 -- 3. As an admin, I want to deactivate inactive or spam users so that the database stays efficient & reliable.
 -- Deactivate users who haven't been involved in any orders (given or received) or listed items in the last 90 days
@@ -23,6 +24,7 @@ LEFT JOIN (
 SET u.IsActive = 0
 WHERE u.IsActive = 1
   AND active_users.UserID IS NULL;
+
 
 -- 4. As an admin, I want to add system announcements so that users are informed of updates.
 INSERT INTO Announcements (AnnouncerID, Message, AnnouncedAt)
@@ -40,12 +42,58 @@ SELECT
     (SELECT COUNT(*) FROM Reports WHERE Resolved = 0) AS OpenReports;
 
 -- 6. As an admin, I want to remove duplicate or spam listings so that the platform remains trustworthy.
+
+-- First delete child rows (Images + ItemTags) to avoid FK errors
+
+
+ALTER TABLE Images
+DROP FOREIGN KEY Images_ibfk_1;
+
+ALTER TABLE Images
+ADD CONSTRAINT Images_ibfk_1
+    FOREIGN KEY (ItemID)
+    REFERENCES Items(ItemID)
+    ON DELETE CASCADE;
+
+-- 2) ItemTags → Items
+ALTER TABLE ItemTags
+DROP FOREIGN KEY ItemTags_ibfk_1;
+
+ALTER TABLE ItemTags
+ADD CONSTRAINT ItemTags_ibfk_1
+    FOREIGN KEY (ItemID)
+    REFERENCES Items(ItemID)
+    ON DELETE CASCADE;
+
+-- 3) OrderItems → Items
+ALTER TABLE OrderItems
+DROP FOREIGN KEY OrderItems_ibfk_1;
+
+ALTER TABLE OrderItems
+ADD CONSTRAINT OrderItems_ibfk_1
+    FOREIGN KEY (ItemID)
+    REFERENCES Items(ItemID)
+    ON DELETE CASCADE;
+
+-- 4) Reports → Items
+ALTER TABLE Reports
+DROP FOREIGN KEY Reports_ibfk_3;
+
+ALTER TABLE Reports
+ADD CONSTRAINT Reports_ibfk_3
+    FOREIGN KEY (ReportedItem)
+    REFERENCES Items(ItemID)
+    ON DELETE CASCADE;
+
+
 DELETE FROM Items
 WHERE
     -- Duplicate items
     EXISTS (
         SELECT 1
-        FROM Items i1
+        FROM (
+            SELECT * FROM Items
+        ) AS i1
         WHERE i1.Title = Items.Title
           AND i1.OwnerID = Items.OwnerID
           AND i1.ItemID < Items.ItemID
@@ -59,10 +107,9 @@ WHERE
         FROM Reports
         WHERE ReportedItem IS NOT NULL AND Resolved = 0
         GROUP BY ReportedItem
-        HAVING COUNT(*) >= 2
-            OR MAX(Severity) >= 4
+        HAVING COUNT(*) >= 2 OR MAX(Severity) >= 4
     );
-
+-- Resolve all reports for removed items
 UPDATE Reports
 SET Resolved = 1,
     ResolverID = 4,
