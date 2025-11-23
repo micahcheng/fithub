@@ -5,9 +5,9 @@ SELECT ReportID, Note, Severity, ReportedItem
 FROM Reports
 WHERE Resolved = 0;
 
--- 2. As an admin, I want to update user roles so that moderators have correct permissions.
+-- 2. As an admin, I want to update user roles so that analysts/adminhave correct permissions.
 UPDATE Users
-SET Role = 'Moderator'
+SET Role = 'Analyst'
 WHERE UserID = 3;
 
 -- 3. As an admin, I want to deactivate inactive or spam users so that the database stays efficient & reliable.

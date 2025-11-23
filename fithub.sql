@@ -144,10 +144,10 @@ CHECK (Rating BETWEEN 1 AND 5)
 INSERT INTO Users (Name, Email, Phone, Address, DOB, Gender, IsActive, Role)
 VALUES
 ('Lena Park', 'lena@example.com', '5551112222','12 Willow Lane, Brooklyn, NY','1998-06-15','Female',1,'User'),
-('Marcus Lee','marcus@example.com','5552223333','89 Cedar St, Seattle, WA','1995-03-02','Male',1,'Moderator'),
+('Marcus Lee','marcus@example.com','5552223333','89 Cedar St, Seattle, WA','1995-03-02','Male',1,'Analyst'),
 ('Jade Alvarez','jade@example.com','5553334444','301 Sunset Blvd, Los Angeles, CA','2000-11-20','Female',1,'User'),
 ('Michael Dunkin','dunkindonutes@gmail.com','4928482938','3958 Sailing Ave, Pittsburgh, PA','1996-05-29','Male',1,'Admin'),
-('Test Moderator','mod@test.com','5559998888','123 Test Ln','1990-01-01','Other',1,'Moderator'),
+('Test Moderator','mod@test.com','5559998888','123 Test Ln','1990-01-01','Other',1,'Analyst'),
 ('Spam Bot','spam@bot.com','0000000000','Unknown','2000-01-01','N/A',0,'User'),
 ('Alex Chen','alex@example.com','5554445555','456 Oak Ave, San Francisco, CA','1997-08-12','Male',1,'User'),
 ('Samira Patel','samira@example.com','5555556666','789 Pine St, Austin, TX','1999-04-25','Female',1,'User'),
