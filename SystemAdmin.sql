@@ -1,4 +1,5 @@
 -- System Administrator CRUD Queries
+USE fithub;
 -- 1. #As an admin, I want to review reported listings so that I can remove inappropriate content  or resolve problems quickly.
 SELECT ReportID, Note, Severity, ReportedItem
 FROM Reports

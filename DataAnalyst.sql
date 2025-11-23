@@ -1,6 +1,7 @@
 -- Data Analyst CRUD Queries
--- 1. As a Senior Data Analyst, I want to view available listings with their posting dates,
-so I can monitor listing performance.
+
+USE fithub;
+-- 1. As a Senior Data Analyst, I want to view available listings with their posting dates, so I can monitor listing performance.
 SELECT
     ItemID,ListedAt, COUNT(*) OVER () AS TotalAvailable
 FROM Items
