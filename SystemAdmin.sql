@@ -13,7 +13,7 @@ WHERE UserID = 3;
 -- 3. As an admin, I want to deactivate inactive or spam users so that the database stays efficient & reliable.
 
 UPDATE Users
-SET IsSuspended = 1, IsActive = 0
+SET IsActive = 0
 WHERE LastLoginAt < DATE_SUB(CURDATE(), INTERVAL 90 DAY);
 
 -- 4. As an admin, I want to add system announcements so that users are informed of updates.
@@ -26,11 +26,16 @@ SELECT
     (SELECT COUNT(*) FROM Users) AS TotalUsers,
     (SELECT COUNT(*) FROM Items) AS TotalListings,
     (SELECT COUNT(*) FROM Reports WHERE Resolved = 0) AS OpenReports;
--- 6. As an admin, I want to remove or flag duplicate or spam listings so that the platform remains trustworthy.
+-- 6. As an admin, I want to remove or report duplicate or spam listings so that the platform remains trustworthy.
 
+INSERT INTO Reports (Note, Severity, Resolved, ReporterID, ReportedItem)
+VALUES ('Admin flagged: suspected duplicate', 3, 0, 4, 1);
 UPDATE Items
-SET IsFlagged = 1, FlagReason = 'Admin flagged: suspected duplicate'
+SET IsRemoved = 1
 WHERE ItemID = 1;
+UPDATE Reports
+SET Resolved = 1, ResolverID = 4, ResolvedAt = NOW()
+WHERE ReportedItem = 1 AND Resolved = 0;
 
 
 
