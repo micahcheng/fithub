@@ -26,7 +26,8 @@ WHERE u.IsActive = 1
 
 -- 4. As an admin, I want to add system announcements so that users are informed of updates.
 INSERT INTO Announcements (AnnouncerID, Message, AnnouncedAt)
-VALUES (4, 'Maintenance scheduled for tonight at 11 PM.', NOW());-- 5. As an admin, I want to track analytics on users & listings so I can monitor system health.
+VALUES (4, 'Maintenance scheduled for tonight at 11 PM.', NOW());
+-- 5. As an admin, I want to track analytics on users & listings so I can monitor system health.
 
 SELECT
     (SELECT COUNT(*) FROM Users) AS TotalUsers,
